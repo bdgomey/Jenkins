@@ -1,6 +1,7 @@
 pipeline {
     agent none
 
+    // stages
     stages {
         stage('Build Frontend') {
             agent {
