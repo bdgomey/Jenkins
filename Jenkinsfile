@@ -20,7 +20,7 @@ pipeline {
                     try {
                         withAWS(region: 'us-east-1', credentials: 'AWS_CREDENTIALS') {
                             sh 'ls'
-                            curl '"https://awscli.amazonaws.com/awscli-exe-linux-x86_64.zip" -o "awscliv2.zip"'
+                            sh 'curl "https://awscli.amazonaws.com/awscli-exe-linux-x86_64.zip" -o "awscliv2.zip"'
                             sh 'unzip awscliv2.zip'
                             sh './aws/install'
                             sh 'aws s3 sync frontend/dist s3://bjgomes-bucket-sdet'
