@@ -11,6 +11,7 @@ pipeline {
             steps {
                 sh 'echo "Building Frontend..."'
                 sh 'cd frontend && npm install && npm run build'
+                stash includes: 'frontend/dist', name: 'frontend'
             }
         }
         stage('Deploy Frontend') {
@@ -24,6 +25,7 @@ pipeline {
                 script {
                     try {
                         withAWS(region: 'us-east-1', credentials: 'AWS_CREDENTIALS') {
+                            unstash 'frontend'
                             sh 'aws s3 sync frontend/dist s3://bjgomes-bucket-sdet'
                         }
                     } catch (Exception e) {
