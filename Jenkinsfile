@@ -79,8 +79,8 @@ pipeline {
             } catch (Exception e) {
                 echo 'Failed to deploy backend, error: ${e}'
             }
+        }
     }
-
     post {
         always {
             echo 'Pipeline completed'
