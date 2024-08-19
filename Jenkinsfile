@@ -1,6 +1,12 @@
 pipeline {
     agent none
     stages {
+        stage('Checkout Code') {
+            agent any
+            steps {
+                checkout([$class: 'GitSCM', branches: [[name: '*/main']], userRemoteConfigs: [[url: 'https://https://github.com/bdgomey/jenkins.git']]])
+            }
+        }
         stage('Build Frontend') {
             agent {
                 docker {
