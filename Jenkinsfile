@@ -1,5 +1,11 @@
 pipeline {
-    agent any
+    agent {
+        docker {
+            image 'jenkins/inbound-agent'
+            label 'docker-agent'
+            args '-v /var/run/docker.sock:/var/run/docker.sock'
+        }
+    }
 
 
     stages {
