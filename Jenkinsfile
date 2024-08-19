@@ -11,7 +11,7 @@ pipeline {
         stage('Test') {
             steps {
                 sh 'echo "Running Tests..."'
-                sh 'mv test' // Example test command for a Maven project
+                sh 'mvn test' // Example test command for a Maven project
             }
         }
         stage('Deploy') {
