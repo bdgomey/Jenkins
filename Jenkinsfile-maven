@@ -1,29 +1,12 @@
 pipeline {
     agent {
         docker {
-            image 'jenkins/inbound-agent'
-            label 'docker-agent'
-            args '-v /var/run/docker.sock:/var/run/docker.sock'
+            image 'maven:eclipse-temurin-11-alpine'
         }
     }
 
 
     stages {
-        stage('Build Frontend') {
-            steps {
-                echo 'Building Frontend'
-                sh 'cd frontend && npm install && npm run build'
-                }
-            }
-        stage('Deploy Frontend') {
-            steps {
-                echo 'Deploying Frontend'
-                withAWS(region: 'us-east-1', credentials: 'AWS_CREDENTIALS') {
-                    sh 'ls'
-                    sh 'aws s3 sync frontend/dist s3://bjgomes-bucket-sdet'
-                }
-            }
-        }
         stage('Build Backend') {
             steps {
                 sh 'echo "Building..."'
@@ -39,8 +22,7 @@ pipeline {
         }
         stage('Deploy Backend') {
             steps {
-                sh 'echo "Deploying..."'
-                // Add deployment commands here
+                sh 'aws s3 sync frontend/dist s3://bjgomes-bucket-sdet-backend'
             }
         }
     }
