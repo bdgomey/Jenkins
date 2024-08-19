@@ -23,6 +23,7 @@ RUN jenkins-plugin-cli --plugins "maven-plugin workflow-aggregator git sonar nod
 # docker run --name jenkins --restart=on-failure --detach `
 #   --network jenkins --env DOCKER_HOST=tcp://docker:2376 `
 #   --env DOCKER_CERT_PATH=/certs/client --env DOCKER_TLS_VERIFY=1 `
+#   --volume /var/run/docker.sock:/var/run/docker.sock `
 #   --volume jenkins-data:/var/jenkins_home `
 #   --volume jenkins-docker-certs:/certs/client:ro `
 #   --publish 8080:8080 --publish 50000:50000 myjenkins-blueocean
