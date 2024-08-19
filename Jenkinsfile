@@ -16,7 +16,7 @@ pipeline {
             steps {
                 sh 'echo "Building Frontend..."'
                 sh 'cd frontend && npm install && npm run build'
-                sh 'apt install -y curl unzip'
+                sh 'apk update && apk install -y curl unzip'
                 script {
                     try {
                         withAWS(region: 'us-east-1', credentials: 'AWS_CREDENTIALS') {
