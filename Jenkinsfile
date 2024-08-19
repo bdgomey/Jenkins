@@ -17,19 +17,13 @@ pipeline {
                 sh 'echo "Building Frontend..."'
                 sh 'cd frontend && npm install && npm run build'
             }
-        }
-        stage('Deploy Frontend') {
-            agent {
-                docker {
-                    image 'amazon/aws-cli'
-                    args '--network jenkins -v /var/run/docker.sock:/var/run/docker.sock'
-                }
-            }
-            steps {
                 script {
                     try {
                         withAWS(region: 'us-east-1', credentials: 'AWS_CREDENTIALS') {
                             sh 'ls'
+                            curl "https://awscli.amazonaws.com/awscli-exe-linux-x86_64.zip" -o "awscliv2.zip"
+                            sh 'unzip awscliv2.zip'
+                            sh './aws/install'
                             sh 'aws s3 sync frontend/dist s3://bjgomes-bucket-sdet'
                         }
                     } catch (Exception e) {
@@ -38,7 +32,7 @@ pipeline {
                     }
                 }
             }
-        }
+        
         stage('Build Backend') {
             agent {
                 docker {
