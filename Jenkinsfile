@@ -17,13 +17,13 @@ pipeline {
                 sh 'echo "Building Frontend..."'
                 sh 'cd frontend && npm install && npm run build'
                 sh 'apk update && apk add curl zip'
+                sh 'curl "https://awscli.amazonaws.com/awscli-exe-linux-x86_64.zip" -o "awscliv2.zip"'
+                sh 'unzip awscliv2.zip'
+                sh './aws/install'
                 script {
                     try {
                         withAWS(region: 'us-east-1', credentials: 'AWS_CREDENTIALS') {
                             sh 'ls'
-                            sh 'curl "https://awscli.amazonaws.com/awscli-exe-linux-x86_64.zip" -o "awscliv2.zip"'
-                            sh 'unzip awscliv2.zip'
-                            sh './aws/install'
                             sh 'aws s3 sync frontend/dist s3://bjgomes-bucket-sdet'
                         }
                     } catch (Exception e) {
