@@ -21,14 +21,17 @@ pipeline {
                     args '--network jenkins -v /var/run/docker.sock:/var/run/docker.sock'
                 }
             }
-            try {
-                steps {
-                    withAWS(region: 'us-east-1', credentials: 'aws-credentials') {
-                        sh 'aws s3 sync frontend/build s3://bjgomes-bucket-sdet-frontend'
+            steps {
+                script {
+                    try {
+                        withAWS(region: 'us-east-1', credentials: 'aws-credentials') {
+                            sh 'aws s3 sync frontend/build s3://bjgomes-bucket-sdet-frontend'
+                        }
+                    } catch (Exception e) {
+                        echo "Failed to deploy frontend, error: ${e}"
+                        throw e
                     }
                 }
-            } catch (Exception e) {
-                echo 'Failed to deploy frontend, error: ${e}'
             }
         }
         stage('Build Backend') {
@@ -38,13 +41,16 @@ pipeline {
                     args '--network jenkins -v /var/run/docker.sock:/var/run/docker.sock'
                 }
             }
-            try {
-                steps {
-                    sh 'echo "Building Backend..."'
-                    sh 'mvn clean install'
+            steps {
+                script {
+                    try {
+                        sh 'echo "Building Backend..."'
+                        sh 'mvn clean install'
+                    } catch (Exception e) {
+                        echo "Failed to build backend, error: ${e}"
+                        throw e
+                    }
                 }
-            } catch (Exception e) {
-                echo 'Failed to build backend, error: ${e}'
             }
         }
         stage('Test Backend') {
@@ -54,13 +60,16 @@ pipeline {
                     args '--network jenkins -v /var/run/docker.sock:/var/run/docker.sock'
                 }
             }
-            try {
-                steps {
-                    sh 'echo "Running Tests..."'
-                    sh 'mvn test'
+            steps {
+                script {
+                    try {
+                        sh 'echo "Running Tests..."'
+                        sh 'mvn test'
+                    } catch (Exception e) {
+                        echo "Failed to run tests, error: ${e}"
+                        throw e
+                    }
                 }
-            } catch (Exception e) {
-                echo 'Failed to run tests, error: ${e}'
             }
         }
         stage('Deploy Backend') {
@@ -70,14 +79,17 @@ pipeline {
                     args '--network jenkins -v /var/run/docker.sock:/var/run/docker.sock'
                 }
             }
-            try {
-                steps {
-                    withAWS(region: 'us-east-1', credentials: 'AWS-CREDENTIALS') {
-                        sh 'aws s3 sync target s3://bjgomes-bucket-sdet-backend'
+            steps {
+                script {
+                    try {
+                        withAWS(region: 'us-east-1', credentials: 'aws-credentials') {
+                            sh 'aws s3 sync target s3://bjgomes-bucket-sdet-backend'
+                        }
+                    } catch (Exception e) {
+                        echo "Failed to deploy backend, error: ${e}"
+                        throw e
                     }
                 }
-            } catch (Exception e) {
-                echo 'Failed to deploy backend, error: ${e}'
             }
         }
     }
