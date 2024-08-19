@@ -16,7 +16,6 @@ pipeline {
             steps {
                 sh 'echo "Building Frontend..."'
                 sh 'cd frontend && npm install && npm run build'
-            }
                 script {
                     try {
                         withAWS(region: 'us-east-1', credentials: 'AWS_CREDENTIALS') {
@@ -32,6 +31,7 @@ pipeline {
                     }
                 }
             }
+        }
         
         stage('Build Backend') {
             agent {
