@@ -13,7 +13,6 @@ pipeline {
                 sh 'cd frontend && npm install && npm run build'
                 }
             }
-        }
         stage('Deploy Frontend') {
             steps {
                 echo 'Deploying Frontend'
