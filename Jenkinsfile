@@ -24,7 +24,7 @@ pipeline {
             steps {
                 script {
                     try {
-                        withAWS(region: 'us-east-1', credentials: 'aws-credentials') {
+                        withAWS(region: 'us-east-1', credentials: 'AWS_CREDENTIALS') {
                             sh 'aws s3 sync frontend/build s3://bjgomes-bucket-sdet-frontend'
                         }
                     } catch (Exception e) {
@@ -82,7 +82,7 @@ pipeline {
             steps {
                 script {
                     try {
-                        withAWS(region: 'us-east-1', credentials: 'aws-credentials') {
+                        withAWS(region: 'us-east-1', credentials: 'AWS_CREDENTIALS') {
                             sh 'aws s3 sync target s3://bjgomes-bucket-sdet-backend'
                         }
                     } catch (Exception e) {
