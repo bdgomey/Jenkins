@@ -33,7 +33,7 @@ pipeline {
                 script {
                     try {
                         withAWS(region: 'us-east-1', credentials: 'AWS_CREDENTIALS') {
-                            sh 'aws s3 sync frontend/dist s3://bjgomes-bucket-sdet-frontend'
+                            sh 'aws s3 sync frontend/dist s3://bjgomes-bucket-sdet'
                         }
                     } catch (Exception e) {
                         echo "Failed to deploy frontend, error: ${e}"
