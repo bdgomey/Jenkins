@@ -5,13 +5,13 @@ pipeline {
         stage('Build') {
             steps {
                 sh 'echo "Building..."'
-                sh 'echo "clean install"' // Example build command for a Maven project
+                sh 'mvn clean install' // Example build command for a Maven project
             }
         }
         stage('Test') {
             steps {
                 sh 'echo "Running Tests..."'
-                sh 'echo "test"' // Example test command for a Maven project
+                sh 'mv test' // Example test command for a Maven project
             }
         }
         stage('Deploy') {
